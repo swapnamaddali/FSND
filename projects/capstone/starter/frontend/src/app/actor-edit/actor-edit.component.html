@@ -1,0 +1,75 @@
+<div *ngIf="loading else loaded">
+    Loading Actor...
+</div>
+<ng-template #loaded>
+<div class="container">
+  <div [hidden]="submitted">
+    <h1>Edit Actor</h1>
+    <form  #actorForm="ngForm">
+      <div class="form-group">
+        <label for="firstname">Firstname</label>
+        <input type="text" class="form-control" id="firstname"
+               required
+               [(ngModel)]="model.firstname" name="firstname"
+               #firstname="ngModel">
+        <div [hidden]="firstname.valid || firstname.pristine"
+             class="alert alert-danger">
+          Firstname is required
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="lastname">Lastname</label>
+        <input type="text" class="form-control" id="lastname"
+               required
+               [(ngModel)]="model.lastname" name="lastname"
+               #lastname="ngModel">
+        <div [hidden]="lastname.valid || lastname.pristine"
+             class="alert alert-danger">
+          Lastname is required
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="age">Age</label>
+        <input type="text" class="form-control" id="age"
+               [(ngModel)]="model.age" name="age"
+               #age="ngModel">
+        <div [hidden]="age.valid || age.pristine"
+                    class="alert alert-danger">
+                 Age is required
+        </div>
+        <!-- <div *ngIf="image_link.valid && image_link.errors.pattern" class="alert alert-danger"> invalid URL </div> -->
+     </div>
+     <div class="form-group">
+      <label for="gender">Gender</label>
+      <select class="form-control" id="gender"
+              required
+              [(ngModel)]="model.gender" name="gender"
+              #gender="ngModel">
+        <option *ngFor="let gen of gedvals" [value]="gen">{{gen}}</option>
+      </select>
+      <div [hidden]="gender.valid || gender.pristine" class="alert alert-danger">
+        Gender is required
+      </div>
+    </div>
+     <div class="form-group">
+       <label for="phone">Phone number</label>
+       <input type="text" class="form-control" id="phone"
+              [(ngModel)]="model.phone" name="phone"
+              #phone="ngModel">
+        <div [hidden]="phone.valid || phone.pristine"
+                          class="alert alert-danger">
+                       Phone is required
+        </div>
+    </div>
+    <div class="form-group">
+      <label for="act_bio">Actor Bio </label>
+      <textarea class="form-control" id="mv_desc"
+             [(ngModel)]="model.act_bio" name="act_bio">
+      </textarea>
+    </div>
+     <button type="submit" class="btn btn-success" (click)="updateActor()" [disabled]="!actorForm.form.valid">Update</button>
+  </form>
+ </div>
+</div>
+
+</ng-template>

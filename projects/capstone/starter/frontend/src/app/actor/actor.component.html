@@ -1,0 +1,35 @@
+<div>
+    <h3 class="text-center"> Actors</h3>
+    <div class="buttDiv" *ngIf="auth.can('post:actors')">
+            <a *ngIf="auth.can('post:actors')" class="btn btn-primary" routerLink="addactors" routerLinkActive="active">Add Actors</a>
+    </div>
+    <div>
+        <div class="col-sm-4" *ngFor="let actor of acts">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title">{{actor.lastname}}, {{actor.firstname}}</h3>
+            </div>
+            <div class="panel-body">
+              <div>{{actor.age}}</div>
+              <div>{{actor.gender}}</div>
+              <div>{{actor.phone}}</div>
+              <div>{{actor.act_bio}}</div>
+              <div>
+                  <a (click)="openModal(actor.id, actor.lastname, actor.firstname)">Movies for this actor</a>
+              </div>
+            </div>
+            <div class="panel-footer">
+              <ul class="list-inline">
+                  <li *ngIf="auth.can('delete:actors')">
+                      <button class="btn btn-success" (click)="deleteActor(actor.id)"> Delete</button>
+                  </li>
+                  <li *ngIf="auth.can('patch:actors')">
+                      <button class="btn btn-success" [routerLink]="['/actor-edit', actor.id]"
+                      style="margin-left: 20px;"> Edit</button>
+                  </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>

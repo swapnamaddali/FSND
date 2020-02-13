@@ -1,0 +1,262 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 12.1 (Ubuntu 12.1-1.pgdg18.04+1)
+-- Dumped by pg_dump version 12.1 (Ubuntu 12.1-1.pgdg18.04+1)
+
+-- Started on 2020-02-12 17:34:24 EST
+
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 208 (class 1259 OID 41010)
+-- Name: act_mov; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.act_mov (
+    id integer NOT NULL,
+    movie_id integer NOT NULL,
+    actor_id integer NOT NULL,
+    start_date timestamp without time zone NOT NULL,
+    end_date timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.act_mov OWNER TO postgres;
+
+--
+-- TOC entry 207 (class 1259 OID 41008)
+-- Name: act_mov_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.act_mov_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.act_mov_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2964 (class 0 OID 0)
+-- Dependencies: 207
+-- Name: act_mov_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.act_mov_id_seq OWNED BY public.act_mov.id;
+
+
+--
+-- TOC entry 204 (class 1259 OID 40988)
+-- Name: actor; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.actor (
+    id integer NOT NULL,
+    firstname character varying(200) NOT NULL,
+    lastname character varying(200) NOT NULL,
+    age integer NOT NULL,
+    gender character varying(10) NOT NULL,
+    phone character varying(120),
+    act_bio character varying(500)
+);
+
+
+ALTER TABLE public.actor OWNER TO postgres;
+
+--
+-- TOC entry 203 (class 1259 OID 40986)
+-- Name: actor_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.actor_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.actor_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2965 (class 0 OID 0)
+-- Dependencies: 203
+-- Name: actor_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.actor_id_seq OWNED BY public.actor.id;
+
+
+--
+-- TOC entry 202 (class 1259 OID 40981)
+-- Name: alembic_version; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.alembic_version (
+    version_num character varying(32) NOT NULL
+);
+
+
+ALTER TABLE public.alembic_version OWNER TO postgres;
+
+--
+-- TOC entry 206 (class 1259 OID 40999)
+-- Name: movie; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.movie (
+    id integer NOT NULL,
+    title character varying NOT NULL,
+    mv_desc character varying(500),
+    genres character varying(120) NOT NULL,
+    image_link character varying(500),
+    seeking_actors boolean,
+    seeking_description character varying(300),
+    website_link character varying(120),
+    facebook_link character varying(120),
+    release_date timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.movie OWNER TO postgres;
+
+--
+-- TOC entry 205 (class 1259 OID 40997)
+-- Name: movie_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.movie_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.movie_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2966 (class 0 OID 0)
+-- Dependencies: 205
+-- Name: movie_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.movie_id_seq OWNED BY public.movie.id;
+
+
+--
+-- TOC entry 2821 (class 2604 OID 41013)
+-- Name: act_mov id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.act_mov ALTER COLUMN id SET DEFAULT nextval('public.act_mov_id_seq'::regclass);
+
+
+--
+-- TOC entry 2819 (class 2604 OID 40991)
+-- Name: actor id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.actor ALTER COLUMN id SET DEFAULT nextval('public.actor_id_seq'::regclass);
+
+
+--
+-- TOC entry 2820 (class 2604 OID 41002)
+-- Name: movie id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.movie ALTER COLUMN id SET DEFAULT nextval('public.movie_id_seq'::regclass);
+
+
+--
+-- TOC entry 2829 (class 2606 OID 41015)
+-- Name: act_mov act_mov_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.act_mov
+    ADD CONSTRAINT act_mov_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2825 (class 2606 OID 40996)
+-- Name: actor actor_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.actor
+    ADD CONSTRAINT actor_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2823 (class 2606 OID 40985)
+-- Name: alembic_version alembic_version_pkc; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.alembic_version
+    ADD CONSTRAINT alembic_version_pkc PRIMARY KEY (version_num);
+
+
+--
+-- TOC entry 2827 (class 2606 OID 41007)
+-- Name: movie movie_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.movie
+    ADD CONSTRAINT movie_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2830 (class 2606 OID 41016)
+-- Name: act_mov act_mov_actor_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.act_mov
+    ADD CONSTRAINT act_mov_actor_id_fkey FOREIGN KEY (actor_id) REFERENCES public.actor(id) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 2831 (class 2606 OID 41021)
+-- Name: act_mov act_mov_movie_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.act_mov
+    ADD CONSTRAINT act_mov_movie_id_fkey FOREIGN KEY (movie_id) REFERENCES public.movie(id) ON DELETE CASCADE;
+
+
+-- Completed on 2020-02-12 17:34:24 EST
+
+-- Insert Actors
+INSERT INTO public.actor(firstname, lastname, age, gender, phone, act_bio)
+VALUES ('TestFirst1', 'TestLast1', 39, 'Male', '4442224242', 'Experienced and popular');
+INSERT INTO public.actor(firstname, lastname, age, gender, phone, act_bio)
+VALUES ('TestFirst2', 'TestLast2', 33, 'Male', '4442224242', 'Worked recently on a block buster and shown amazing talent');
+INSERT INTO public.actor(firstname, lastname, age, gender, phone, act_bio)
+VALUES ('TestFirst3', 'TestLast3', 34, 'Male', '4442224242', 'Honest and downto earth');
+INSERT INTO public.actor(firstname, lastname, age, gender, phone, act_bio)
+VALUES ('TestFirst4', 'TestLast4', 23, 'Male', '4442224242', 'Powerful among Masses and able to handle');
+INSERT INTO public.actor(firstname, lastname, age, gender, phone, act_bio)
+VALUES ('TestFirst5', 'TestLast5', 26, 'Male', '4442224242', 'Able to handle multifaceted roles');
+
+--
+-- PostgreSQL database dump complete
+--

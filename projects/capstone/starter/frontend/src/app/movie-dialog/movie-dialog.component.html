@@ -1,0 +1,36 @@
+    <div *ngIf="loading else loaded">
+    Loading ...
+</div>
+<ng-template #loaded>
+    <h1 mat-dialog-title>Actors Working in {{ modalTitle }} </h1>
+    <div class="mat-dialog-content">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Schedule start date</th>
+            <th>Schedule end date</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let act of acts_in_movie;">
+            <td>{{ act.actmovid }}</td>
+            <td> {{ act.fname }} {{ act.lname }}</td>
+            <td> {{ act.sdate |  date:'MM/dd/yyyy'}}</td>
+            <td> {{ act.edate |  date:'MM/dd/yyyy'}}</td>
+            <td>
+              <img src="../../assets/delete-24px.svg"
+              (click)="deleteactmov(act.actmovid)" alt="delete"/>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="mat-dialog-actions">
+        <button type="button" class="btn btn-outline-primary" (click)="closeModal()"
+        data-dismiss="modal">Close</button>
+    </div>
+
+</ng-template>

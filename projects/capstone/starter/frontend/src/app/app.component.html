@@ -1,0 +1,29 @@
+<div class="container">
+      <nav class="navbar navbar-inverse">
+        <div class="appheader">
+          SMADD CASTING AGENCY
+        </div>
+        <ul class="nav navbar-nav">
+          <li>
+            <a routerLink="movies" routerLinkActive="active">Movies</a>
+          </li>
+          <li>
+            <a routerLink="actors" routerLinkActive="active">Actors</a>
+          </li>
+          <li *ngIf="auth.can('delete:actors')">
+            <a routerLink="actmov" routerLinkActive="active">Schedule Actor/Movies</a>
+          </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <a *ngIf="!auth.token" [href]="loginURL">Log In</a>
+          </li>
+          <li>
+            <button class="btn navbar-btn" (click)="auth.logout()">Log Out</button>
+          </li>
+        </ul>
+      </nav>
+      <div class="col-sm-12">
+        <router-outlet></router-outlet>
+      </div>
+</div>

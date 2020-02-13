@@ -1,0 +1,16 @@
+<div *ngIf="loading else loaded">
+    Loading ...
+</div>
+<ng-template #loaded>
+    <h1 mat-dialog-title>{{ modalTitle }} Movies </h1>
+    <div class="mat-dialog-content">
+        <div *ngFor="let mv of moviesList">
+          {{ mv.title  }}
+        </div>
+
+        <div class="mat-dialog-actions">
+            <button type="button" class="btn btn-outline-primary"
+            data-dismiss="modal" (click)="closeModal()">Close</button>
+        </div>
+    </div>
+</ng-template>

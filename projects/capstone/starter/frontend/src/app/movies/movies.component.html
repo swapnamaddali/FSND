@@ -1,0 +1,42 @@
+<div>
+    <h3 class="text-center">Movies</h3>
+    <div class="buttDiv" *ngIf="auth.can('post:movies')">
+            <a *ngIf="auth.can('post:movies')" class="btn btn-primary" routerLink="addmovies" routerLinkActive="active">Add Movies</a>
+    </div>
+    <!-- We are going to get an array of deals stored in the publicDeals variable. We'll loop over that variable here using the ngFor directive -->
+    <div class="col-sm-4" *ngFor="let movie of mvs">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">{{ movie.title }}</h3>
+        </div>
+        <div class="panel-body">
+            <div> {{ movie.genres }} </div>
+            <div> {{ movie.release_date }}</div>
+            <div>
+                <ul class="list-inline">
+                  <li>{{ movie.facebook_link }}</li>
+                  <li>{{ movie.website_link }}</li>
+                </ul>
+            </div>
+            <div>{{ movie.mv_desc }}</div>
+            <div>
+            <a (click)="openModal(movie.id, movie.title)">Actors Schedules in the Movie</a>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <ul class="list-inline">
+                <li *ngIf="auth.can('delete:movies')"><button class="btn btn-success" (click)="deleteMovie(movie.id)"> Delete</button></li>
+                <li *ngIf="auth.can('patch:movies')">
+                    <button class="btn btn-success" [routerLink]="['/movie-edit', movie.id]"
+                    style="margin-left: 20px;">Edit</button>
+                </li>
+            </ul>
+
+        </div>
+      </div>
+    </div>
+    <!-- If an error occurs, we'll show an error message -->
+    <div class="col-sm-12 alert alert-danger" *ngIf="error">
+      <strong>Oops!</strong> An error occurred fetching data. Please try again.
+    </div>
+</div>
