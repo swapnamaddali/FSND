@@ -15,16 +15,19 @@ import { MovieDialogComponent } from '../movie-dialog/movie-dialog.component';
 export class MoviesComponent implements OnInit {
 
     mvs: Movie[];
+    error: string;
+    loading=true;
 
     constructor(public mvService: MovieService,
                 public router: Router,
-                private auth: AuthService,
+                public auth: AuthService,
                 public matDialog: MatDialog) { }
 
     ngOnInit() {
         this.mvService.getMovies()
             .subscribe( mvs => {
                 this.loadData(mvs)
+                this.loading = false;
             },(err) => {
         console.log(err);
         });
@@ -43,7 +46,7 @@ export class MoviesComponent implements OnInit {
         .subscribe( mvs => {
             this.reloadData(id)
         },(err) => {
-            console.log(err);
+            this.error = "Error Occurred"
         });
     }
 

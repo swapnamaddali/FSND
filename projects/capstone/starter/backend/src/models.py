@@ -4,14 +4,9 @@ from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 import json
 
-database_name = "capstone"
-database_path = "postgres://{}/{}".format(
-                                    'postgres:password@127.0.0.1:5432',
-                                    database_name
-                                    )
+database_path = os.environ['DATABASE_URL']
 
 db = SQLAlchemy()
-
 
 '''
 setup_db(app)
@@ -24,6 +19,7 @@ def setup_db(app, database_path=database_path):
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
+
 
 class ActMov(db.Model):
     __tablename__ = 'act_mov'
@@ -67,11 +63,11 @@ class Actor(db.Model):
     firstname = db.Column(db.String(200), nullable=False)
     lastname = db.Column(db.String(200), nullable=False)
     act_bio = db.Column(db.String(500))
-    age =  db.Column(db.Integer, nullable=False)
-    gender = db.Column(db.String(10),nullable=False)
+    age = db.Column(db.Integer, nullable=False)
+    gender = db.Column(db.String(10), nullable=False)
     phone = db.Column(db.String(120))
     act_mov = db.relationship('ActMov', backref='actor', lazy=True,
-                                cascade="all, delete-orphan")
+                              cascade="all, delete-orphan")
 
     def insert(self):
         db.session.add(self)
@@ -86,19 +82,20 @@ class Actor(db.Model):
 
     def format(self):
         return {
-                'id': self.id,
-                'firstname': self.firstname,
-                'lastname':self.lastname,
-                'age': self.age,
-                'gender': self.gender,
-                'phone':self.phone,
-                'act_bio': self.act_bio
-               }
+            'id': self.id,
+            'firstname': self.firstname,
+            'lastname': self.lastname,
+            'age': self.age,
+            'gender': self.gender,
+            'phone': self.phone,
+            'act_bio': self.act_bio
+        }
 
 
 '''
 Movies
 '''
+
 
 class Movie(db.Model):
     __tablename__ = 'movie'
@@ -116,8 +113,7 @@ class Movie(db.Model):
         nullable=False,
         default=datetime.utcnow)
     act_mov = db.relationship('ActMov', backref='movie', lazy=True,
-                                cascade="all, delete-orphan")
-
+                              cascade="all, delete-orphan")
 
     def insert(self):
         db.session.add(self)
@@ -132,14 +128,14 @@ class Movie(db.Model):
 
     def format(self):
         return {
-                'id': self.id,
-                'title': self.title,
-                'mv_desc':self.mv_desc,
-                'genres': self.genres,
-                'image_link':self.image_link,
-                'seeking_actors':self.seeking_actors,
-                'seeking_description':self.seeking_description,
-                'website_link':self.website_link,
-                'facebook_link':self.facebook_link,
-                'release_date': self.release_date,
-               }
+            'id': self.id,
+            'title': self.title,
+            'mv_desc': self.mv_desc,
+            'genres': self.genres,
+            'image_link': self.image_link,
+            'seeking_actors': self.seeking_actors,
+            'seeking_description': self.seeking_description,
+            'website_link': self.website_link,
+            'facebook_link': self.facebook_link,
+            'release_date': self.release_date,
+        }

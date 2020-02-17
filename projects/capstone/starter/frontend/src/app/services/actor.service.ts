@@ -7,6 +7,7 @@ import { Movie } from '../classes/movie';
 import { Actmov } from '../classes/actmov';
 import { AuthService } from '../services/auth.service';
 import { Router } from "@angular/router";
+import { environment } from '../../environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -17,7 +18,7 @@ const httpOptions = {
 })
 export class ActorService {
 
-apiURL = 'http://127.0.0.1:5000';
+apiURL = environment.apiServerUrl;
 
 actor = new Actor();
 
@@ -34,11 +35,11 @@ actor = new Actor();
  }
 
   public getActors(): Observable<Actor[]> {
-    return this.http.get<Actor[]>(`http://127.0.0.1:5000/actors`)
+    const url = `${this.apiURL}/actors`;
+    return this.http.get<Actor[]>(url)
   }
 
   public addActor(actor: Actor) {
-      console.log(actor);
       this.http.post(this.apiURL + '/actors', actor, this.getHeaders())
       .subscribe( (res: any) => {
         if (res.success) {
@@ -51,14 +52,14 @@ actor = new Actor();
       this.http.post(this.apiURL + '/actmov', actmov, this.getHeaders())
       .subscribe( (res: any) => {
         if (res.success) {
-          this.router.navigateByUrl('/actors');
+          this.router.navigateByUrl('/movies');
         }
       });
   }
 
     getActor(id): Observable<Actor> {
-        console.log("Getting actor deail ===>" + id);
-        return this.http.get<Actor>(`http://127.0.0.1:5000/actordetail/${id}`,
+        const url = `${this.apiURL}/actordetail/${id}`;
+        return this.http.get<Actor>(url,
             this.getHeaders()).pipe(
               tap(_ => console.log(`fetched Actor id=${id}`)),
               catchError(this.handleError)
@@ -66,7 +67,8 @@ actor = new Actor();
     }
 
     updateActor(id, actor) {
-        this.http.patch(`http://127.0.0.1:5000/actors/${id}`, actor, this.getHeaders())
+        const url = `${this.apiURL}/actors/${id}`;
+        this.http.patch(url, actor, this.getHeaders())
             .subscribe( (res: any) => {
                 if (res.success) {
                     this.router.navigateByUrl('/actors');
@@ -75,7 +77,8 @@ actor = new Actor();
     }
 
     deleteActor(id) :Observable<{}> {
-        return this.http.delete(`http://127.0.0.1:5000/actors/${id}`, this.getHeaders())
+        const url = `${this.apiURL}/actors/${id}`;
+        return this.http.delete(url, this.getHeaders())
             .pipe(catchError(this.handleError)
             );
     }

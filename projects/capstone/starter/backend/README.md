@@ -24,22 +24,28 @@ This will install all of the required packages we selected within the `requireme
 
 - [Flask](http://flask.pocoo.org/)  is a lightweight backend microservices framework. Flask is required to handle requests and responses.
 
-- [SQLAlchemy](https://www.sqlalchemy.org/) and [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/) are libraries to handle the lightweight sqlite database. Since we want you to focus on auth, we handle the heavy lift for you in `./src/database/models.py`. We recommend skimming this code first so you know how to interface with the Drink model.
+- [SQLAlchemy](https://www.sqlalchemy.org/) and [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/) are libraries to handle postgres database.
+Models are defined in  `./src/models.py` which will create the needed migrations.
 
-- [jose](https://python-jose.readthedocs.io/en/latest/) JavaScript Object Signing and Encryption for JWTs. Useful for encoding, decoding, and verifying JWTS.
+- [auth] (https://auth0.com) Auth0 is used for validating users JWT token and
+providing access accordingly. A custom @requires_auth decorator is used for
+getting the authorization from request header and validating the token and permissions.
 
 ## Running the server
 
 From within the `./src` directory first ensure you are working using your created virtual environment.
 
 Run :
+Environment variables required for the app (auth and database) are created and maintained
+in `./src/setup.sh` file. Running the below command after the virtual env is started
+will allow it to set the values in environment.
+
+source setup.sh
 
 ```bash
 python app.py
 ```
 this will start the local server at 127.0.0.1:5000/
-
-
 
 ```
 ## Testing
@@ -52,4 +58,3 @@ psql capstone_test < capstone.psql
         Path of /FSND/projects/capstone/starter/backend/src/capstone.psql
 python test_app.py (Need to execute this the environment created for the project)
 ```
-`

@@ -1,9 +1,10 @@
 <div class="container">
+
       <nav class="navbar navbar-inverse">
         <div class="appheader">
           SMADD CASTING AGENCY
         </div>
-        <ul class="nav navbar-nav">
+        <ul class="nav navbar-nav" *ngIf="auth.token">
           <li>
             <a routerLink="movies" routerLinkActive="active">Movies</a>
           </li>
@@ -16,14 +17,19 @@
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li>
-            <a *ngIf="!auth.token" [href]="loginURL">Log In</a>
-          </li>
-          <li>
-            <button class="btn navbar-btn" (click)="auth.logout()">Log Out</button>
+            <button style="font-weight: bold; margin-left: 8px;" *ngIf="auth.token" class="btn navbar-btn" (click)="logout()">Log Out</button>
           </li>
         </ul>
       </nav>
-      <div class="col-sm-12">
+      <div *ngIf="!auth.token">
+          Please login
+          <a style="font-weight: bold; margin-left: 8px;" *ngIf="!auth.token"  class="btn navbar-btn"  (click)="goLogin()">Log in</a>
+
+      </div>
+      <div *ngIf="auth.token">
+          You are currently logged in as <b>{{ (auth.userProfile && auth.userProfile.name) ?  auth.userProfile.name : auth.userProfile }}</b>
+      </div>
+      <div class="col-sm-12" *ngIf="auth.token">
         <router-outlet></router-outlet>
       </div>
 </div>

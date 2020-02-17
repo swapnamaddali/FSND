@@ -28,6 +28,7 @@
       <div class="form-group">
         <label for="age">Age</label>
         <input type="text" class="form-control" id="age"
+               required
                [(ngModel)]="model.age" name="age"
                #age="ngModel">
         <div [hidden]="age.valid || age.pristine"
@@ -51,6 +52,7 @@
      <div class="form-group">
        <label for="phone">Phone number</label>
        <input type="text" class="form-control" id="phone"
+              required
               [(ngModel)]="model.phone" name="phone"
               #phone="ngModel">
         <div [hidden]="phone.valid || phone.pristine"
@@ -65,6 +67,7 @@
       </textarea>
     </div>
      <button type="submit" class="btn btn-success" (click)="addActor()" [disabled]="!actorForm.form.valid">Submit</button>
+     <button type="reset" class="btn btn-default">Reset</button>
   </form>
  </div>
 </div>

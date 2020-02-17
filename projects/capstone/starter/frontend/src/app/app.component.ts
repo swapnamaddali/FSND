@@ -11,7 +11,7 @@ export class AppComponent implements OnInit {
   title = 'SMADD Casting Agency';
   loginURL: string;
 
-  constructor( private auth: AuthService,
+  constructor( public auth: AuthService,
                 private router: Router ) {
       this.initializeApp();
       this.loginURL = this.auth.build_login_link('');
@@ -20,10 +20,19 @@ export class AppComponent implements OnInit {
   initializeApp() {
       this.auth.load_jwts();
       this.auth.check_token_fragment();
-      this.router.navigateByUrl('/movies');
+      this.auth.getUserProfile();
   }
 
   ngOnInit() {
+
+  }
+
+  goLogin(){
+    window.location.href = this.loginURL;
+  }
+
+  logout() {
+      this.auth.logout();
   }
 
 }

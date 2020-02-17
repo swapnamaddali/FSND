@@ -246,17 +246,12 @@ ALTER TABLE ONLY public.act_mov
 -- Completed on 2020-02-12 17:34:24 EST
 
 -- Insert Actors
-INSERT INTO public.actor(firstname, lastname, age, gender, phone, act_bio)
-VALUES ('TestFirst1', 'TestLast1', 39, 'Male', '4442224242', 'Experienced and popular');
-INSERT INTO public.actor(firstname, lastname, age, gender, phone, act_bio)
-VALUES ('TestFirst2', 'TestLast2', 33, 'Male', '4442224242', 'Worked recently on a block buster and shown amazing talent');
-INSERT INTO public.actor(firstname, lastname, age, gender, phone, act_bio)
-VALUES ('TestFirst3', 'TestLast3', 34, 'Male', '4442224242', 'Honest and downto earth');
-INSERT INTO public.actor(firstname, lastname, age, gender, phone, act_bio)
-VALUES ('TestFirst4', 'TestLast4', 23, 'Male', '4442224242', 'Powerful among Masses and able to handle');
-INSERT INTO public.actor(firstname, lastname, age, gender, phone, act_bio)
-VALUES ('TestFirst5', 'TestLast5', 26, 'Male', '4442224242', 'Able to handle multifaceted roles');
+INSERT INTO public.actor(id, firstname, lastname, age, gender, phone, act_bio)
+VALUES (499, 'TestFirst1', 'TestLast1', 39, 'Male', '4442224242', 'Experienced and popular');
 
+--Inset Movies
+INSERT INTO public.movie(id, title, mv_desc, genres, seeking_actors, seeking_description,release_date)
+VALUES (1000, 'TestMovie', 'Testing Movie Description', 'family', 'true', 'experienced actors', '2025-10-12 00:00:00');
 --
 -- PostgreSQL database dump complete
 --

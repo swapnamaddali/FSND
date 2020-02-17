@@ -17,7 +17,7 @@ export class ActorComponent implements OnInit {
 
     constructor(public aService: ActorService,
               public router: Router,
-            private auth: AuthService,
+            public auth: AuthService,
             public matDialog: MatDialog) { }
 
     ngOnInit() {

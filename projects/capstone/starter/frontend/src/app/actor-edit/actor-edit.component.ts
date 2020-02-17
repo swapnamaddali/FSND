@@ -15,6 +15,7 @@ export class ActorEditComponent implements OnInit {
     _id:number;
     loading=true;
     gedvals = ['Male', 'Female'];
+    submitted = false;
 
   constructor(private router: Router,
         private route: ActivatedRoute,
@@ -39,6 +40,7 @@ export class ActorEditComponent implements OnInit {
   }
 
   updateActor() {
+      this.submitted = true;
       this.aService.updateActor(this._id, this.model);
   }
 

@@ -13,12 +13,14 @@ export class ActorformComponent implements OnInit {
     model = new Actor();
 
     gedvals = ['Male', 'Female'];
+    submitted = false;
 
     constructor(public aService: ActorService) { }
 
     ngOnInit() { }
 
     public addActor(){
+        this.submitted = true;
         this.aService.addActor(this.model);
     }
 

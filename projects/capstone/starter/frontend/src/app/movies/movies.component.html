@@ -1,3 +1,7 @@
+<div *ngIf="loading else loaded">
+Loading ...
+</div>
+<ng-template #loaded>
 <div>
     <h3 class="text-center">Movies</h3>
     <div class="buttDiv" *ngIf="auth.can('post:movies')">
@@ -20,7 +24,7 @@
             </div>
             <div>{{ movie.mv_desc }}</div>
             <div>
-            <a (click)="openModal(movie.id, movie.title)">Actors Schedules in the Movie</a>
+            <a *ngIf="auth.can('patch:movies')" (click)="openModal(movie.id, movie.title)">Actors Schedules in the Movie</a>
             </div>
         </div>
         <div class="panel-footer">
@@ -40,3 +44,4 @@
       <strong>Oops!</strong> An error occurred fetching data. Please try again.
     </div>
 </div>
+</ng-template>

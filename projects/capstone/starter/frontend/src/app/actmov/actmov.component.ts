@@ -22,17 +22,23 @@ export class ActmovComponent implements OnInit {
 
     stDateForValidation: String;
     endDateForValidation: String;
-    today: String;
+
+    minToday: Date;
+    maxDate: Date;
 
     //Error Display
     error:any={isError:false,errorMessage:''};
     isValidDate:any;
+    submitted = false;
 
     constructor(
         private auth: AuthService,
         public aService: ActorService,
         private mvService: MovieService,
-        private datePipe: DatePipe) { }
+        private datePipe: DatePipe) {
+            this.minToday = new Date();
+            this.maxDate = new Date('2030-01-01');
+         }
 
     ngOnInit() {
         this.aService.getActors()
@@ -58,31 +64,27 @@ export class ActmovComponent implements OnInit {
     }
 
     public addSchedule(){
-        this.stDateForValidation = this.datePipe.transform(this.model.start_date,"dd-MM-yyyy");
-        this.endDateForValidation = this.datePipe.transform(this.model.end_date,"dd-MM-yyyy");
-
-        this.isValidDate = this.validateDates(this.stDateForValidation, this.endDateForValidation);
+        if(this.model.start_date == null) {
+            this.error={isError:true,errorMessage:'Start Date is Required!!!'};
+            return;
+        }
+        if (this.model.end_date == null) {
+            this.error={isError:true,errorMessage:'End date is Required!!!'};
+            return;
+        }
+        this.isValidDate = this.validateDates(new Date(this.model.start_date),
+                                    new Date(this.model.end_date));
         if(this.isValidDate){
+            this.submitted = true;
             this.aService.addActmov(this.model);
         }
     }
 
-    validateDates(sDate: String, npDate: String){
-        this.isValidDate = true;
-        this.today = this.datePipe.transform(Date.now(),"dd-MM-yyyy");
-        if(sDate != null && this.today > (sDate)) {
-            this.error={isError:true,errorMessage:'Start Date should be greater than today.'};
-            this.isValidDate = false;
+    validateDates(sDate: Date, npDate: Date){
+        if(sDate != null && npDate != null && (sDate > npDate)){
+          this.error={isError:true,errorMessage:'End date should be greater then start date.'};
+          return false;
         }
-        if(npDate != null && this.today > (npDate)) {
-            this.error={isError:true,errorMessage:'End Date should be greater than today.'};
-            this.isValidDate = false;
-        }
-        if((sDate != null && npDate !=null) && (npDate) < (sDate)){
-          this.error={isError:true,errorMessage:'End date should be grater then start date.'};
-          this.isValidDate = false;
-        }
-
-        return this.isValidDate;
+        return true;
     }
 }

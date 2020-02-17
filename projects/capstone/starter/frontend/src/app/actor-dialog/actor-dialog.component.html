@@ -3,12 +3,12 @@
 </div>
 <ng-template #loaded>
     <h1 mat-dialog-title>{{ modalTitle }} Movies </h1>
-    <div class="mat-dialog-content">
+    <div>
         <div *ngFor="let mv of moviesList">
-          {{ mv.title  }}
+          <b>{{ mv.title  }}</b>
         </div>
 
-        <div class="mat-dialog-actions">
+        <div style="margin-top: 10px;">
             <button type="button" class="btn btn-outline-primary"
             data-dismiss="modal" (click)="closeModal()">Close</button>
         </div>

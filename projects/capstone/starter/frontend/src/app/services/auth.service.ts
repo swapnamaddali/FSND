@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
-
+import * as auth0 from 'auth0-js';
 import { environment } from '../../environments/environment';
 
 const JWTS_LOCAL_KEY = 'JWTS_LOCAL_KEY';
@@ -14,9 +14,17 @@ export class AuthService {
   audience = environment.auth0.audience;
   clientId = environment.auth0.clientId;
   callbackURL = environment.auth0.callbackURL;
+  scope = environment.auth0.scope;
+  logoutURL = environment.auth0.logoutURL;
 
   token: string;
   payload: any;
+  userProfile: any;
+
+  webAuth = new auth0.WebAuth({
+    domain:  this.url + '.auth0.com',
+    clientID: this.clientId
+  });
 
   constructor() { }
 
@@ -26,6 +34,7 @@ export class AuthService {
     link += '/authorize?';
     link += 'audience=' + this.audience + '&';
     link += 'response_type=token&';
+    link += 'scope=' + this.scope + '&';
     link += 'client_id=' + this.clientId + '&';
     link += 'redirect_uri=' + this.callbackURL + callbackPath;
     return link;
@@ -58,6 +67,25 @@ export class AuthService {
     }
   }
 
+  getUserProfile() {
+      if(this.token) {
+          this.webAuth.client.userInfo(this.token, (err, profile) => {
+              if (profile) {
+                this._setSession( profile);
+              } else if (err) {
+                  console.log(err);
+              }
+          });
+    } else {
+         this.userProfile = "General Public User";
+    }
+  }
+
+  private _setSession( profile?) {
+      this.userProfile = profile;
+  }
+
+
   activeJWT() {
     return this.token;
   }
@@ -71,7 +99,10 @@ export class AuthService {
   logout() {
     this.token = '';
     this.payload = null;
+    this.userProfile = "General Public User";
     this.set_jwt();
+    this.webAuth.logout({returnTo: this.logoutURL,
+                            client_id: this.clientId});
   }
 
   can(permission: string) {

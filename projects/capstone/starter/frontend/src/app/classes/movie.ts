@@ -8,7 +8,7 @@ export class Movie {
     seeking_description?: String;
     website_link?: String;
     facebook_link?: String;
-    release_date: String;
+    release_date: Date;
     act_mov?: any[];
 
 }

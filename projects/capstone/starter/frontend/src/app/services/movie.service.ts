@@ -6,13 +6,14 @@ import { Movie } from '../classes/movie';
 import { Actor } from '../classes/actor';
 import { AuthService } from '../services/auth.service';
 import { Router } from "@angular/router";
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MovieService {
 
-    apiURL = 'http://127.0.0.1:5000';
+    apiURL = environment.apiServerUrl;
     model:any;
 
     constructor(private auth: AuthService,
@@ -28,7 +29,8 @@ export class MovieService {
    }
 
     public getMovies(): Observable<Movie[]> {
-      return this.http.get<Movie[]>(`http://127.0.0.1:5000/movies`);
+        const url = `${this.apiURL}/movies`;
+        return this.http.get<Movie[]>(url);
     }
 
     public addMovie(movie: Movie) {
@@ -41,13 +43,15 @@ export class MovieService {
     }
 
     getMovie(id): Observable<Movie> {
-        return this.http.get<Movie>(`http://127.0.0.1:5000/movies/${id}`,
+        const url = `${this.apiURL}/movies/${id}`;
+        return this.http.get<Movie>(url,
             this.getHeaders()).pipe(catchError(this.handleError)
             );
     }
 
     updateMovie(id, movie) {
-        this.http.patch(`http://127.0.0.1:5000/movies/${id}`, movie, this.getHeaders())
+        const url = `${this.apiURL}/movies/${id}`;
+        this.http.patch(url, movie, this.getHeaders())
             .subscribe( (res: any) => {
                 if (res.success) {
                     this.router.navigateByUrl('/movies');
@@ -56,7 +60,8 @@ export class MovieService {
     }
 
     deleteMovie(id) :Observable<{}> {
-        return this.http.delete(`http://127.0.0.1:5000/movies/${id}`, this.getHeaders())
+        const url = `${this.apiURL}/movies/${id}`;
+        return this.http.delete(url, this.getHeaders())
             .pipe(catchError(this.handleError)
             );
     }
@@ -72,7 +77,8 @@ export class MovieService {
           start_date: sdate,
           end_date: edate
         };
-        this.http.patch(`http://127.0.0.1:5000/actmovs/${id}`, this.model, this.getHeaders())
+        const url = `${this.apiURL}/actmovs/${id}`;
+        this.http.patch(url, this.model, this.getHeaders())
             .subscribe( (res: any) => {
                 if (res.success) {
                     console.log("updated");
@@ -81,7 +87,8 @@ export class MovieService {
     }
 
     deleteActMovie(id) :Observable<{}> {
-        return this.http.delete(`http://127.0.0.1:5000/actmovs/${id}`, this.getHeaders())
+        const url = `${this.apiURL}/actmovs/${id}`;
+        return this.http.delete(url, this.getHeaders())
             .pipe(catchError(this.handleError)
             );
     }

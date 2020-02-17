@@ -75,17 +75,16 @@
 
    <div class="form-group">
      <label for="release_date">Release Date</label>
-     <input type="text" class="form-control" id="release_date"
-            required
-            [(ngModel)]="model.release_date" name="release_date"
-            #release_date="ngModel">
-     <div [hidden]="release_date.valid || release_date.pristine"
-          class="alert alert-danger">
-       Release date is required
-     </div>
+     <input style="margin-left: 20px;" matInput [matDatepicker]="relDate"
+     [(ngModel)]="model.release_date" [min]="minToday" [max]="maxDate"
+     placeholder="Choose Release Date"  name="release_date" readonly required>
+     <mat-datepicker-toggle matSuffix [for]="relDate"></mat-datepicker-toggle>
+     <mat-datepicker #relDate></mat-datepicker>
    </div>
      <button type="submit" class="btn btn-success" (click)="updateMovie()" [disabled]="!movieForm.form.valid">Submit</button>
   </form>
  </div>
 </div>
+
+<div style="margin-top: 20px;" class="text-danger" *ngIf="error.isError">{{error.errorMessage}}</div>
 </ng-template>

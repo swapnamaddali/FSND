@@ -30,23 +30,28 @@
       </div>
       <div class="form-group">
         <label for="start_date">Schedule Start Date</label>
-        <input  matInput [matDatepicker]="startDate" id="start_date"
-        [(ngModel)]="model.start_date" #start_date="ngModel"
-        name="start_date">
+        <input style="margin-left: 20px;" matInput [matDatepicker]="startDate" id="start_date"
+        [(ngModel)]="model.start_date" [min]="minToday" [max]="maxDate"
+        placeholder="Choose Start Date" (dateChange)="error.isError = null"
+        name="start_date" readonly required>
         <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
         <mat-datepicker #startDate></mat-datepicker>
       </div>
       <div class="form-group">
         <label for="end_date">Schedule End Date</label>
-        <input matInput [matDatepicker]="endDate" id="end_date"
-        [(ngModel)]="model.end_date" #start_date="ngModel"
-        name="end_date">
+        <input style="margin-left: 20px;" matInput [matDatepicker]="endDate" id="end_date"
+        [(ngModel)]="model.end_date" [min]="minToday" [max]="maxDate"
+        placeholder="Choose End Date" (dateChange)="error.isError = null"
+        name="end_date" readonly required>
         <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
         <mat-datepicker #endDate></mat-datepicker>
       </div>
-     <button type="submit" class="btn btn-success" (click)="addSchedule()" [disabled]="!actmovForm.form.valid">Submit</button>
+     <button type="submit" class="btn btn-success" (click)="addSchedule()"
+            [disabled]="!actmovForm.form.valid">Submit
+     </button>
+     <button type="reset" style="margin-left: 20px;" class="btn btn-default">Reset</button>
   </form>
  </div>
 </div>
 
-<div class="text-danger" *ngIf="error.isError">{{error.errorMessage}}</div>
+<div style="margin-top: 20px;" class="text-danger" *ngIf="error.isError">{{error.errorMessage}}</div>

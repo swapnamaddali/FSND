@@ -6,8 +6,9 @@ from flask_cors import CORS
 from models import setup_db, Movie, Actor, ActMov
 from auth.auth import AuthError, requires_auth
 
+
 def create_app(test_config=None):
-  # create and configure the app
+    # create and configure the app
     app = Flask(__name__)
     setup_db(app)
     CORS(app)
@@ -15,9 +16,9 @@ def create_app(test_config=None):
     @app.after_request
     def after_request(response):
         response.headers.add('Access-Control-Allow-Headers',
-                           'Content_Type, Authorization')
+                             'Content_Type, Authorization')
         response.headers.add('Access-Control-Allow-Methods',
-                           'GET,POST,PATCH,DELETE,OPTIONS')
+                             'GET,POST,PATCH,DELETE,OPTIONS')
         return response
 
     '''
@@ -36,7 +37,6 @@ def create_app(test_config=None):
 
         return jsonify({'success': True, 'actors': act_format})
 
-
     '''
     @TODO:
     Create a GET endpoint to get actors based on actor id.
@@ -48,8 +48,8 @@ def create_app(test_config=None):
         actor = Actor.query.get(act_id)
         if actor:
             return jsonify({"success": True,
-                          "actor": actor.format()
-                          })
+                            "actor": actor.format()
+                            })
         else:
             abort(404)
 
@@ -68,7 +68,8 @@ def create_app(test_config=None):
             try:
                 ac.delete()
                 return jsonify({"success": True,
-                          "deleted": ac.id})
+                                "deleted": ac.id
+                                })
             except Exception as e:
                 print(str(e))
         else:
@@ -91,20 +92,22 @@ def create_app(test_config=None):
         new_phone = data.get('phone', None)
         new_actbio = data.get('act_bio', None)
 
-        if new_fname is None or new_lname is None or new_age is None or new_gender is None:
+        if (new_fname is None or new_lname is None
+                or new_age is None or new_gender is None):
+
             abort(400)
         else:
             try:
                 q = Actor(firstname=new_fname,
-                             lastname=new_lname,
-                             act_bio=new_actbio,
-                             age=new_age,
-                             gender=new_gender,
-                             phone=new_phone,
-                             )
+                          lastname=new_lname,
+                          act_bio=new_actbio,
+                          age=new_age,
+                          gender=new_gender,
+                          phone=new_phone,
+                          )
                 q.insert()
                 return jsonify({"success": True,
-                               "created": q.id})
+                                "created": q.id})
             except Exception as e:
                 print(str(e))
                 abort(422)
@@ -138,13 +141,12 @@ def create_app(test_config=None):
             actor.act_bio = new_actbio
             actor.update()
             return jsonify({"success": True,
-                           "actor": actor.format()})
+                            "actor": actor.format()})
         else:
             abort(404)
 
-
     '''
-        **************************MOVIES API ********************************
+    **************************MOVIES API ********************************
     '''
     '''
     @TODO:
@@ -157,9 +159,9 @@ def create_app(test_config=None):
         frmovies = [movie.format() for movie in movies]
 
         return jsonify({'success': True,
-                      'movies': frmovies,
-                      'total_movies': len(frmovies)
-                      })
+                        'movies': frmovies,
+                        'total_movies': len(frmovies)
+                        })
 
     '''
     @TODO:
@@ -171,8 +173,8 @@ def create_app(test_config=None):
         movie = Movie.query.get(mv_id)
         if movie:
             return jsonify({"success": True,
-                          "movies": movie.format(),
-                          })
+                            "movies": movie.format(),
+                            })
         else:
             abort(404)
 
@@ -190,7 +192,7 @@ def create_app(test_config=None):
             try:
                 mv.delete()
                 return jsonify({"success": True,
-                          "deleted": mv.id})
+                                "deleted": mv.id})
             except Exception as e:
                 print(str(e))
         else:
@@ -230,7 +232,7 @@ def create_app(test_config=None):
                           release_date=new_reldate)
                 q.insert()
                 return jsonify({"success": True,
-                               "created": q.id})
+                                "created": q.id})
             except Exception as e:
                 print(str(e))
                 abort(422)
@@ -254,7 +256,7 @@ def create_app(test_config=None):
         new_weblink = data.get('website_link', None)
         new_fblink = data.get('facebook_link', None)
         new_reldate = data.get('release_date', None)
-        movie = Movie.query.filter(Movie.id == id).one_or_none()
+        movie = Movie.query.get(id)
         if movie:
             movie.title = new_title
             movie.mv_desc = new_mvdesc
@@ -267,7 +269,7 @@ def create_app(test_config=None):
             movie.release_date = new_reldate
             movie.update()
             return jsonify({"success": True,
-                           "movie": movie.format()})
+                            "movie": movie.format()})
         else:
             abort(404)
 
@@ -287,18 +289,19 @@ def create_app(test_config=None):
         new_sd = data.get('start_date', None)
         new_ed = data.get('end_date', None)
 
-        if new_actid is None or new_mvid is None or new_sd is None or new_ed is None:
+        if (new_actid is None or new_mvid is None
+                or new_sd is None or new_ed is None):
             abort(400)
         else:
             try:
                 q = ActMov(actor_id=new_actid,
-                             movie_id=new_mvid,
-                             start_date=new_sd,
-                             end_date=new_ed,
-                             )
+                           movie_id=new_mvid,
+                           start_date=new_sd,
+                           end_date=new_ed,
+                           )
                 q.insert()
                 return jsonify({"success": True,
-                               "created": q.id})
+                                "created": q.id})
             except Exception as e:
                 print(str(e))
                 abort(422)
@@ -310,7 +313,6 @@ def create_app(test_config=None):
 
     @app.route('/actors/<int:act_id>/movies', methods=['GET'])
     def getMoviesByActor(act_id):
-        #movies = Movie.query.filter(Movie.act_mov.actor_id == act_id).all()
         act_movs = ActMov.query.filter(ActMov.actor_id == act_id)
 
         movies = []
@@ -322,7 +324,7 @@ def create_app(test_config=None):
         mv_format = [mv.format() for mv in movies]
 
         return jsonify({"success": True,
-                      "movies": mv_format})
+                        "movies": mv_format})
 
     '''
     @TODO:
@@ -332,11 +334,8 @@ def create_app(test_config=None):
     @app.route('/movies/<int:mov_id>/actors', methods=['GET'])
     @requires_auth('delete:actors')
     def getActorsByMovie(jwt, mov_id):
-        #movies = Movie.query.filter(Movie.act_mov.actor_id == act_id).all()
         act_movs = ActMov.query.filter(ActMov.movie_id == mov_id)
-
         actors = []
-
         for am in act_movs:
             acmv = {}
             act = Actor.query.get(am.actor_id)
@@ -348,11 +347,8 @@ def create_app(test_config=None):
             acmv["edate"] = am.end_date
             actors.append(acmv)
 
-
         return jsonify({"success": True,
-                      "actors": actors})
-
-
+                        "actors": actors})
     '''
     @TODO:
     Create a DELETE endpoint to delete actor movie association
@@ -366,7 +362,7 @@ def create_app(test_config=None):
             try:
                 am.delete()
                 return jsonify({"success": True,
-                          "deleted": am.id})
+                                "deleted": am.id})
             except Exception as e:
                 print(str(e))
         else:
@@ -390,10 +386,9 @@ def create_app(test_config=None):
 
             actmv.update()
             return jsonify({"success": True,
-                           "actmv": actmv.format()})
+                            "actmv": actmv.format()})
         else:
             abort(404)
-
 
     '''
     Error Handling for API
@@ -437,7 +432,9 @@ def create_app(test_config=None):
 
     return app
 
+
 app = create_app()
+
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5000, debug=True)
