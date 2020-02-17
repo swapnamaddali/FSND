@@ -7,6 +7,6 @@ export const environment = {
     scope: 'openid email profile',
     clientId: 'ElZ8ooFtRdWttDtCMVBNwGsjIHlaMEJz', // the client id generated for the auth0 app
     callbackURL: 'https://smaddali-casting-agency-ui.herokuapp.com/movies', // the base url of the running ionic application.
-    logoutURL: 'http://smaddali-casting-agency-ui.herokuapp.com'
+    logoutURL: 'https://smaddali-casting-agency-ui.herokuapp.com'
   }
 };
